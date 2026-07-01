@@ -1,30 +1,19 @@
-# פרויקט Drupal עם Docker
+# פרויקט Drupal ב-Docker - רז מצליח ובן פישר
 
-## חברי הצוות
+## מי אנחנו
 
 - רז מצליח
 - בן פישר
 
-## הקשר הקורס
+פרויקט מסכם בקורס DevTools, מכללת אפקה, הנדסת תוכנה, שנה א׳ סמסטר ב׳.
 
-פרויקט מסכם בקורס כלי פיתוח, מכללת אפקה, הנדסת תוכנה, שנה א׳ סמסטר ב׳.
+## מה נדרשנו לעשות
 
-## מה התבקשנו לעשות
-
-בפרויקט התבקשנו להקים אתר Drupal פשוט בעזרת Docker, לחבר אותו למסד נתונים MySQL, ולהוסיף סקריפטים לגיבוי, שחזור, ניקוי ותיעוד של הפרויקט.
+נדרשנו ליצור אתר Drupal בעזרת Docker, לחבר אותו למסד נתונים MySQL, ליצור אפשרויות גיבוי ושחזור, ליצור סקריפט ניקוי, ולתעד הכל בקובץ README.
 
 ## מה עשינו
 
-יצרנו סביבת Docker הכוללת:
-
-- רשת Docker בשם `afeka-drupal-network`
-- קונטיינר MySQL בשם `afeka-mysql-db`
-- קונטיינר Drupal בשם `afeka-drupal-site`
-- volumes לשמירת נתוני MySQL ונתוני Drupal
-- סקריפט הקמה: `setup.sh`
-- סקריפט גיבוי: `backup.sh`
-- סקריפט שחזור: `restore.sh`
-- סקריפט ניקוי: `cleanup.sh`
+יצרנו רשת Docker, קונטיינר MySQL, קונטיינר Drupal, Docker volumes, סקריפט הקמה, סקריפט גיבוי, סקריפט שחזור, סקריפט ניקוי ותיעוד לפרויקט.
 
 ## טכנולוגיות
 
@@ -35,79 +24,77 @@
 - Git
 - GitHub
 
-## מדריך הפעלה מלא
+## מבנה הקבצים בפרויקט
 
-### 1. שכפול הפרויקט
+```text
+.
+├── setup.sh
+├── backup.sh
+├── restore.sh
+├── cleanup.sh
+├── README.md
+├── backups/
+│   └── .gitkeep
+└── backups/my-drupal.backup.sql.gz
+```
+
+הקובץ `backups/my-drupal.backup.sql.gz` לא נוצר ידנית. הוא נוצר רק אחרי התקנת Drupal והרצת `./backup.sh`.
+
+## הוראות הפעלה Step By Step
 
 ```bash
 git clone https://github.com/Afeka-DevTools/26b-10142-unittesting-raz_ben.git
-```
-
-### 2. כניסה לתיקיית הפרויקט
-
-```bash
 cd 26b-10142-unittesting-raz_ben
-```
-
-### 3. מתן הרשאות הרצה לסקריפטים
-
-```bash
 chmod +x setup.sh backup.sh restore.sh cleanup.sh
-```
-
-### 4. הקמת סביבת Docker
-
-```bash
 ./setup.sh
 ```
 
-הסקריפט יוצר רשת Docker, volumes, קונטיינר MySQL וקונטיינר Drupal.
+לאחר הרצת `setup.sh`, פותחים בדפדפן:
 
-### 5. פתיחת האתר בדפדפן
-
-לאחר ההרצה פותחים את האתר:
-
-```text
+```bash
 http://localhost:8080
 ```
 
-### 6. פרטי התקנת Drupal
+## הגדרת Drupal בדפדפן
 
-במסך ההתקנה של Drupal יש לבחור MySQL ולהזין את הפרטים הבאים:
+במסך ההתקנה של Drupal יש לבחור MySQL ולהשתמש בפרטים הבאים:
 
 ```text
-Database type: MySQL
-Database host: afeka-mysql-db
-Database name: drupal_db
-Database user: drupal_user
-Database password: drupal_pass
-Site name: האתר של רז מצליח ובן פישר
-Admin username: demoadmin
-Admin password: secretpass
+Database type:
+MySQL
+
+Database host:
+afeka-mysql-db
+
+Database port:
+3306
+
+Database name:
+drupal_db
+
+Database user:
+drupal_user
+
+Database password:
+drupal_pass
+
+Site name:
+האתר של רז מצליח ובן פישר
+
+Admin username:
+demoadmin
+
+Admin password:
+secretpass
 ```
 
-### 7. יצירת משתמשים לחברי הצוות
+חשוב: חשבון המנהל `demoadmin` נוצר ידנית בזמן התקנת Drupal בדפדפן.
 
-לאחר סיום התקנת Drupal:
+משתמשים לחברי הצוות צריכים להיווצר ידנית בתוך Drupal אחרי סיום ההתקנה.
 
-1. נכנסים לממשק הניהול עם המשתמש `demoadmin`.
-2. נכנסים ל-`People`.
-3. לוחצים על `Add user`.
-4. יוצרים משתמש עבור רז מצליח ומשתמש עבור בן פישר.
-5. שומרים את המשתמשים.
+תוכן מילון המונחים של הקורס צריך להתווסף ידנית דרך ממשק הניהול של Drupal.
 
-### 8. הוספת תוכן מילון מונחים לקורס
-
-כדי להוסיף תוכן ידני לאתר:
-
-1. נכנסים לממשק הניהול של Drupal.
-2. נכנסים ל-`Content`.
-3. לוחצים על `Add content`.
-4. יוצרים עמודים או מאמרים עם מונחים מהקורס כלי פיתוח.
-5. בכל פריט תוכן מוסיפים כותרת, הסבר קצר ודוגמה אם צריך.
-6. שומרים את התוכן.
-
-### 9. יצירת גיבוי
+## גיבוי
 
 לאחר שהאתר ומסד הנתונים קיימים, מריצים:
 
@@ -121,9 +108,7 @@ Admin password: secretpass
 backups/my-drupal.backup.sql.gz
 ```
 
-אם הקובץ לא קיים עדיין, הוא ייווצר אחרי הרצת `./backup.sh`.
-
-### 10. שחזור מגיבוי
+## שחזור
 
 כדי לשחזר את מסד הנתונים מהגיבוי:
 
@@ -133,7 +118,7 @@ backups/my-drupal.backup.sql.gz
 
 הסקריפט משחזר את הקובץ `backups/my-drupal.backup.sql.gz` ומפעיל מחדש את קונטיינר Drupal.
 
-### 11. ניקוי הפרויקט
+## ניקוי סביבת העבודה
 
 כדי למחוק את סביבת Docker של הפרויקט:
 
@@ -141,18 +126,26 @@ backups/my-drupal.backup.sql.gz
 ./cleanup.sh
 ```
 
-חשוב: הסקריפט מוחק את הקונטיינרים, התמונות, ה-volumes והרשת של הפרויקט. לכן הוא מבקש אישור לפני המחיקה. כדי להמשיך צריך להקליד `yes`.
-
-## שמות והגדרות קבועים בפרויקט
+הסקריפט מבקש אישור לפני המחיקה. כדי להמשיך צריך להקליד בדיוק:
 
 ```text
-Drupal URL: http://localhost:8080
-Docker network: afeka-drupal-network
-Drupal container: afeka-drupal-site
-MySQL container: afeka-mysql-db
-Database name: drupal_db
-Database user: drupal_user
-Database password: drupal_pass
-MySQL root password: my-secret-pw
-Backup file: backups/my-drupal.backup.sql.gz
+yes
 ```
+
+חשוב: cleanup מוחק את הקונטיינרים של הפרויקט, Docker images, רשת Docker ו-Docker volumes. מחיקת ה-volumes מוחקת גם את נתוני Drupal ו-MySQL שנשמרו בהם.
+
+## הערות חשובות
+
+- כתובת האתר: `http://localhost:8080`
+- רשת Docker: `afeka-drupal-network`
+- קונטיינר Drupal: `afeka-drupal-site`
+- קונטיינר MySQL: `afeka-mysql-db`
+- Volume של MySQL: `afeka-mysql-data`
+- Volume של Drupal: `afeka-drupal-data`
+- שם מסד הנתונים: `drupal_db`
+- משתמש מסד הנתונים: `drupal_user`
+- סיסמת מסד הנתונים: `drupal_pass`
+- סיסמת root של MySQL: `my-secret-pw`
+- קובץ הגיבוי: `backups/my-drupal.backup.sql.gz`
+- הפרויקט משתמש בפקודות Docker רגילות ובסקריפטים פשוטים ב-Bash.
+- אין ליצור קובץ גיבוי מזויף. קובץ הגיבוי האמיתי נוצר רק אחרי התקנת Drupal והרצת `./backup.sh`.

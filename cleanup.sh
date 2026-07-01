@@ -4,7 +4,7 @@ NETWORK_NAME="afeka-drupal-network"
 MYSQL_CONTAINER="afeka-mysql-db"
 DRUPAL_CONTAINER="afeka-drupal-site"
 MYSQL_VOLUME="afeka-mysql-data"
-DRUPAL_VOLUME="afeka-drupal-sites-data"
+DRUPAL_VOLUME="afeka-drupal-data"
 
 container_exists() {
     docker ps -a --format '{{.Names}}' | grep -qx "$1"
@@ -18,9 +18,15 @@ image_exists() {
     docker image inspect "$1" >/dev/null 2>&1
 }
 
-echo "אזהרה: cleanup ימחק את הקונטיינרים, התמונות, הרשת וה-volumes של הפרויקט."
-echo "פעולה זו מוחקת גם את נתוני MySQL שנשמרו ב-volume של הפרויקט."
-echo "Are you sure? type yes"
+echo "אזהרה: cleanup ימחק את סביבת Docker של הפרויקט."
+echo "הפעולה מוחקת:"
+echo "- קונטיינר Drupal: $DRUPAL_CONTAINER"
+echo "- קונטיינר MySQL: $MYSQL_CONTAINER"
+echo "- רשת Docker: $NETWORK_NAME"
+echo "- Docker volumes: $MYSQL_VOLUME, $DRUPAL_VOLUME"
+echo "- Docker images: drupal:latest, mysql:latest"
+echo ""
+echo "כדי להמשיך הקלידו בדיוק: yes"
 read -r answer
 
 if [ "$answer" != "yes" ]; then

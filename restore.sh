@@ -35,8 +35,8 @@ if ! container_exists "$DRUPAL_CONTAINER"; then
     exit 1
 fi
 
-if gunzip -c "$BACKUP_FILE" | docker exec -i "$MYSQL_CONTAINER" sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"'; then
-    echo "השחזור הסתיים בהצלחה."
+if gunzip < "$BACKUP_FILE" | docker exec -i "$MYSQL_CONTAINER" sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" --force'; then
+    echo "מסד הנתונים שוחזר בהצלחה."
 else
     echo "שגיאה: השחזור נכשל."
     exit 1
@@ -45,3 +45,4 @@ fi
 echo "מפעיל מחדש את קונטיינר Drupal..."
 docker restart "$DRUPAL_CONTAINER" >/dev/null
 echo "קונטיינר Drupal הופעל מחדש."
+echo "השחזור הסתיים בהצלחה."

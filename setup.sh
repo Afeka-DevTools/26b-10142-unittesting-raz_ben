@@ -6,7 +6,7 @@ NETWORK_NAME="afeka-drupal-network"
 MYSQL_CONTAINER="afeka-mysql-db"
 DRUPAL_CONTAINER="afeka-drupal-site"
 MYSQL_VOLUME="afeka-mysql-data"
-DRUPAL_VOLUME="afeka-drupal-sites-data"
+DRUPAL_VOLUME="afeka-drupal-data"
 
 MYSQL_ROOT_PASSWORD="my-secret-pw"
 MYSQL_DATABASE="drupal_db"
@@ -55,20 +55,32 @@ docker run -d \
     -v "$MYSQL_VOLUME":/var/lib/mysql \
     mysql:latest >/dev/null
 
+echo "ממתין כמה שניות כדי ש-MySQL יתחיל לעבוד..."
+sleep 10
+
 echo "מקים קונטיינר Drupal בשם $DRUPAL_CONTAINER..."
 docker run -d \
     --name "$DRUPAL_CONTAINER" \
     --network "$NETWORK_NAME" \
     -p 8080:80 \
-    -v "$DRUPAL_VOLUME":/var/www/html/sites \
+    -v "$DRUPAL_VOLUME":/var/www/html \
     drupal:latest >/dev/null
 
 echo ""
 echo "הסביבה הוקמה בהצלחה."
-echo "Open the site at http://localhost:8080"
-echo "Database host for Drupal installation: afeka-mysql-db"
+echo ""
+echo "פתחו את Drupal בדפדפן:"
+echo "http://localhost:8080"
+echo ""
+echo "פרטי מסד הנתונים להתקנת Drupal:"
+echo "Database type: MySQL"
+echo "Database host: afeka-mysql-db"
+echo "Database port: 3306"
 echo "Database name: drupal_db"
 echo "Database user: drupal_user"
 echo "Database password: drupal_pass"
+echo ""
+echo "פרטי האתר:"
+echo "Site name: האתר של רז מצליח ובן פישר"
 echo "Admin username: demoadmin"
 echo "Admin password: secretpass"
