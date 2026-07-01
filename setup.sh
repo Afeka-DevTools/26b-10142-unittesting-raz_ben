@@ -7,6 +7,8 @@ MYSQL_CONTAINER="afeka-mysql-db"
 DRUPAL_CONTAINER="afeka-drupal-site"
 MYSQL_VOLUME="afeka-mysql-data"
 DRUPAL_VOLUME="afeka-drupal-data"
+MYSQL_IMAGE="mysql:8.4"
+DRUPAL_IMAGE="drupal:11-apache"
 
 MYSQL_ROOT_PASSWORD="my-secret-pw"
 MYSQL_DATABASE="drupal_db"
@@ -53,10 +55,21 @@ docker run -d \
     -e MYSQL_USER="$MYSQL_USER" \
     -e MYSQL_PASSWORD="$MYSQL_PASSWORD" \
     -v "$MYSQL_VOLUME":/var/lib/mysql \
-    mysql:latest >/dev/null
+    "$MYSQL_IMAGE" >/dev/null
 
-echo "ממתין כמה שניות כדי ש-MySQL יתחיל לעבוד..."
-sleep 10
+echo "ממתין עד ש-MySQL יהיה מוכן לקבל חיבורים..."
+for attempt in {1..30}; do
+    if docker exec "$MYSQL_CONTAINER" mysqladmin ping -h localhost -uroot -p"$MYSQL_ROOT_PASSWORD" >/dev/null 2>&1; then
+        break
+    fi
+
+    if [ "$attempt" -eq 30 ]; then
+        echo "שגיאה: MySQL לא התחיל לעבוד בזמן."
+        exit 1
+    fi
+
+    sleep 2
+done
 
 echo "מקים קונטיינר Drupal בשם $DRUPAL_CONTAINER..."
 docker run -d \
@@ -64,13 +77,15 @@ docker run -d \
     --network "$NETWORK_NAME" \
     -p 8080:80 \
     -v "$DRUPAL_VOLUME":/var/www/html \
-    drupal:latest >/dev/null
+    "$DRUPAL_IMAGE" >/dev/null
 
 echo ""
 echo "הסביבה הוקמה בהצלחה."
 echo ""
 echo "פתחו את Drupal בדפדפן:"
 echo "http://localhost:8080"
+echo ""
+echo "בבחירת פרופיל התקנה בחרו Standard."
 echo ""
 echo "פרטי מסד הנתונים להתקנת Drupal:"
 echo "Database type: MySQL"

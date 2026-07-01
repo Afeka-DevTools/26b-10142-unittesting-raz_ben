@@ -5,6 +5,8 @@ MYSQL_CONTAINER="afeka-mysql-db"
 DRUPAL_CONTAINER="afeka-drupal-site"
 MYSQL_VOLUME="afeka-mysql-data"
 DRUPAL_VOLUME="afeka-drupal-data"
+MYSQL_IMAGE="mysql:8.4"
+DRUPAL_IMAGE="drupal:11-apache"
 
 container_exists() {
     docker ps -a --format '{{.Names}}' | grep -qx "$1"
@@ -24,7 +26,7 @@ echo "- קונטיינר Drupal: $DRUPAL_CONTAINER"
 echo "- קונטיינר MySQL: $MYSQL_CONTAINER"
 echo "- רשת Docker: $NETWORK_NAME"
 echo "- Docker volumes: $MYSQL_VOLUME, $DRUPAL_VOLUME"
-echo "- Docker images: drupal:latest, mysql:latest"
+echo "- Docker images: $DRUPAL_IMAGE, $MYSQL_IMAGE"
 echo ""
 echo "כדי להמשיך הקלידו בדיוק: yes"
 read -r answer
@@ -60,7 +62,7 @@ for volume_name in "$MYSQL_VOLUME" "$DRUPAL_VOLUME"; do
     fi
 done
 
-for image_name in "drupal:latest" "mysql:latest"; do
+for image_name in "$DRUPAL_IMAGE" "$MYSQL_IMAGE"; do
     if image_exists "$image_name"; then
         echo "מוחק image: $image_name"
         docker rmi "$image_name" >/dev/null 2>&1 || echo "לא ניתן למחוק את $image_name, ייתכן שהוא בשימוש."
