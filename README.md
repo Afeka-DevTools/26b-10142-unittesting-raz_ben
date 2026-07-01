@@ -33,12 +33,11 @@
 ├── restore.sh
 ├── cleanup.sh
 ├── README.md
-├── backups/
-│   └── .gitkeep
-└── backups/my-drupal.backup.sql.gz
+└── backups/
+    └── .gitkeep
 ```
 
-הקובץ `backups/my-drupal.backup.sql.gz` לא נוצר ידנית. הוא נוצר רק אחרי התקנת Drupal והרצת `./backup.sh`.
+הקובץ `backups/my-drupal.backup.sql.gz` אינו חלק מהריפוזיטורי ואסור ליצור אותו ידנית. הוא נוצר רק אחרי התקנת Drupal והרצת `./backup.sh` על אתר Drupal מוגדר ופעיל.
 
 ## הוראות הפעלה Step By Step
 
@@ -98,7 +97,7 @@ secretpass
 
 חשוב: חשבון המנהל `demoadmin` נוצר ידנית בזמן התקנת Drupal בדפדפן.
 
-משתמשים לחברי הצוות צריכים להיווצר ידנית בתוך Drupal אחרי סיום ההתקנה.
+משתמשים עבור רז מצליח ובן פישר צריכים להיווצר ידנית בתוך Drupal אחרי סיום ההתקנה.
 
 תוכן מילון המונחים של הקורס צריך להתווסף ידנית דרך ממשק הניהול של Drupal.
 

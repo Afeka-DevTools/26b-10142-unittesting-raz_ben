@@ -5,6 +5,7 @@ set -o pipefail
 
 MYSQL_CONTAINER="afeka-mysql-db"
 DRUPAL_CONTAINER="afeka-drupal-site"
+MYSQL_DATABASE="drupal_db"
 BACKUP_FILE="backups/my-drupal.backup.sql.gz"
 
 container_is_running() {
@@ -35,7 +36,7 @@ if ! container_exists "$DRUPAL_CONTAINER"; then
     exit 1
 fi
 
-if gunzip < "$BACKUP_FILE" | docker exec -i "$MYSQL_CONTAINER" sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" --force'; then
+if gunzip < "$BACKUP_FILE" | docker exec -i "$MYSQL_CONTAINER" sh -c "exec mysql -uroot -p\"\$MYSQL_ROOT_PASSWORD\" --force \"$MYSQL_DATABASE\""; then
     echo "מסד הנתונים שוחזר בהצלחה."
 else
     echo "שגיאה: השחזור נכשל."

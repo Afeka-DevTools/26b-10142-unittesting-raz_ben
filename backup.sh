@@ -4,6 +4,7 @@ set -e
 set -o pipefail
 
 MYSQL_CONTAINER="afeka-mysql-db"
+MYSQL_DATABASE="drupal_db"
 BACKUP_DIR="backups"
 BACKUP_FILE="$BACKUP_DIR/my-drupal.backup.sql.gz"
 TEMP_FILE="$BACKUP_FILE.tmp"
@@ -22,7 +23,7 @@ fi
 
 mkdir -p "$BACKUP_DIR"
 
-if docker exec "$MYSQL_CONTAINER" sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' | gzip > "$TEMP_FILE"; then
+if docker exec "$MYSQL_CONTAINER" sh -c "exec mysqldump --single-transaction --quick --lock-tables=false -uroot -p\"\$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\"" | gzip > "$TEMP_FILE"; then
     mv "$TEMP_FILE" "$BACKUP_FILE"
     echo "הגיבוי נוצר בהצלחה: $BACKUP_FILE"
 else
