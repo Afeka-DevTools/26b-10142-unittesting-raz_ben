@@ -108,12 +108,12 @@ bash ./gradlew test
 ├── README.md
 └── backups/
     ├── .gitkeep
-    └── my-drupal.backup.sql.gz
+    ├── my-drupal.backup.sql.gz
+    └── drupal-sites.backup.tar.gz
 ```
 
-הקובץ `backups/my-drupal.backup.sql.gz` הוא קובץ הגיבוי האמיתי של בסיס הנתונים.
-הוא נוצר לאחר התקנת Drupal, הוספת תכנים והרצת `./backup.sh`.
-אין ליצור קובץ גיבוי מזויף ידנית.
+שני קובצי הגיבוי נוצרים רק אחרי התקנת Drupal והרצת `./backup.sh` על אתר Drupal מוגדר ופעיל; אין ליצור אותם ידנית.
+לפני הגשה יש לוודא ששני הקבצים נמצאים ב־repository, כנדרש במטלה.
 
 ## הוראות הפעלה Step By Step
 
@@ -185,21 +185,43 @@ secretpass
 ./backup.sh
 ```
 
-הגיבוי נשמר בקובץ:
+הסקריפט מגבה את כל מסדי הנתונים של MySQL ואת כל קובצי ה-volume של Drupal. שני הקבצים נכתבים תחילה זמנית, עוברים בדיקת תקינות, ורק אז מחליפים את הגיבוי הקודם:
 
 ```text
 backups/my-drupal.backup.sql.gz
+backups/drupal-sites.backup.tar.gz
+```
+
+אימות הגיבויים:
+
+```bash
+gzip -t backups/my-drupal.backup.sql.gz
+tar -tzf backups/drupal-sites.backup.tar.gz >/dev/null
+sha256sum backups/my-drupal.backup.sql.gz backups/drupal-sites.backup.tar.gz || shasum -a 256 backups/my-drupal.backup.sql.gz backups/drupal-sites.backup.tar.gz
 ```
 
 ## שחזור
 
-כדי לשחזר את מסד הנתונים מהגיבוי:
+כדי לשחזר את האתר המלא מהגיבויים:
 
 ```bash
 ./restore.sh
 ```
 
-הסקריפט משחזר את הקובץ `backups/my-drupal.backup.sql.gz` ומפעיל מחדש את קונטיינר Drupal.
+הסקריפט בודק את שני הארכיונים לפני שינוי, מחליף את קובצי ה-volume, משחזר את MySQL ומפעיל מחדש את קונטיינר Drupal.
+
+### שחזור מלא אחרי clone, cleanup או על מכונה נקייה
+
+בתנאי ששני קובצי הגיבוי הגיעו עם ה־repository, זהו רצף השחזור המלא:
+
+```bash
+chmod +x setup.sh backup.sh restore.sh cleanup.sh
+./setup.sh
+./restore.sh
+docker ps
+```
+
+לאחר מכן פותחים `http://localhost:8080`, בודקים את שם האתר, מתחברים עם חשבון המנהל ובודקים את דפי המילון. אין להוסיף תוכן במקום מילון המושגים של Moodle ללא מקור Moodle אמיתי.
 
 ## ניקוי סביבת העבודה
 
@@ -229,6 +251,6 @@ yes
 - משתמש מסד הנתונים: `drupal_user`
 - סיסמת מסד הנתונים: `drupal_pass`
 - סיסמת root של MySQL: `my-secret-pw`
-- קובץ הגיבוי: `backups/my-drupal.backup.sql.gz`
+- גיבויי האתר: `backups/my-drupal.backup.sql.gz`, `backups/drupal-sites.backup.tar.gz`
 - הפרויקט משתמש בפקודות Docker רגילות ובסקריפטים פשוטים ב-Bash.
 - אין ליצור קובץ גיבוי מזויף. קובץ הגיבוי האמיתי נוצר רק אחרי התקנת Drupal והרצת `./backup.sh`.
