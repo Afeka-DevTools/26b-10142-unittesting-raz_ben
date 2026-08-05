@@ -1,6 +1,8 @@
 # תרגיל בית 2 - בדיקות יחידה ב-Java עם Gradle
 
-מאגר זה כולל בדיקות יחידה עבור הפונקציות שבקובץ `App.java` במסגרת קורס כלי פיתוח.
+מאגר זה הוא ההגשה הקבוצתית של תרגיל בית 2 בקורס כלי פיתוח. הוא כולל בדיקות
+יחידה עבור כל הפונקציות הציבוריות בקובץ `App.java`, בנייה באמצעות Gradle,
+בדיקת כיסוי אוטומטית ותיעוד השימוש ב-LLM.
 
 ## חברי הצוות
 
@@ -8,6 +10,24 @@
 | --- | --- |
 | רז מצליח | `razmazlih` |
 | בן פישר | `Benjamin-1Fisher` |
+
+## מבנה המטלה
+
+```text
+.
+├── app/
+│   └── src/
+│       ├── main/java/org/example/App.java
+│       └── test/java/org/example/AppTest.java
+├── chats/
+│   ├── LEARNING.md
+│   └── COPILOT.md
+├── logs/
+│   ├── LEARNING.md
+│   └── COPILOT.md
+├── gradlew
+└── README.md
+```
 
 ## דרישות מוקדמות
 
@@ -30,7 +50,10 @@ cd 26b-10142-unittesting-raz_ben
 gradlew.bat clean check
 ```
 
-הפקודה `check` מריצה את כל בדיקות JUnit 5 ומאמתת כיסוי של 100% לשורות ולענפים באמצעות JaCoCo. דוח הבדיקות נוצר תחת `app/build/reports/tests/test/`, ודוח הכיסוי נמצא תחת `app/build/reports/jacoco/test/html/index.html`.
+הפקודה `check` מהדרת את הקוד, מריצה את כל בדיקות JUnit 5, ומאמתת באמצעות
+JaCoCo כיסוי של 100% לשורות ולענפים. דוח הבדיקות נוצר תחת
+`app/build/reports/tests/test/`, ודוח הכיסוי נוצר תחת
+`app/build/reports/jacoco/test/html/index.html`.
 
 להרצת הבדיקות בלבד:
 
@@ -40,7 +63,8 @@ gradlew.bat clean check
 
 ## מה נבדק
 
-`app/src/test/java/org/example/AppTest.java` מכסה את כל 11 הפונקציות הציבוריות ב-`App.java`:
+`app/src/test/java/org/example/AppTest.java` מכסה את כל 11 המתודות הציבוריות
+ב-`App.java`:
 
 - `add`
 - `isPrime`
@@ -54,181 +78,25 @@ gradlew.bat clean check
 - `filterEvens`
 - `mostCommonWord`
 
-הבדיקות כוללות ערכי גבול, קלטים תקינים ולא תקינים, חריגות, מחרוזות ריקות, אותיות גדולות/קטנות, רווחים, סימני פיסוק ושימור סדר ברשימות. נעשה שימוש במגוון Assertions של JUnit 5, כולל `assertEquals`, `assertTrue`, `assertFalse`, `assertThrows`, `assertAll`, `assertIterableEquals`, `assertNotNull` ו-`assertDoesNotThrow`.
+הבדיקות כוללות קלטים תקינים, ערכי גבול, קלטים שליליים, קלט ריק, חריגות,
+רישיות, רווחים, סימני פיסוק ושימור סדר ברשימות. נעשה שימוש ב-Assertions
+מגוונים של JUnit 5: `assertEquals`, `assertTrue`, `assertFalse`,
+`assertThrows`, `assertAll`, `assertIterableEquals`, `assertNotNull` ו-
+`assertDoesNotThrow`.
 
-## בדיקת מסלולי הקוד
+## בדיקת כיסוי ונתיבי קוד
 
-המשימה דורשת לבדוק שכל הנתיבים ומקרי הקצה מכוסים. לכן הוגדרו כללי JaCoCo ב-`app/build.gradle.kts` שמכשילים את `./gradlew check` אם כיסוי השורות או הענפים נמוך מ-100%. ההגדרה מספקת אימות אוטומטי בנוסף לבדיקת מקרי הקצה הידנית.
+כללי JaCoCo ב-`app/build.gradle.kts` מכשילים את `./gradlew check` אם כיסוי
+השורות או הענפים של `App.java` נמוך מ-100%. ההרצה המאומתת האחרונה כיסתה
+46 מתוך 46 שורות ו-26 מתוך 26 ענפים.
 
 ## תיעוד שימוש ב-LLM
 
-תיעוד השיחות נמצא בשתי התיקיות הנדרשות:
+ההגשה כוללת את כל קבצי התיעוד הנדרשים:
 
-- `chats/` - תמלילי הלמידה ותהליך כתיבת הבדיקות.
-- `logs/` - יומן ההגשה של חלקי הלמידה והסיוע בכתיבת הבדיקות.
+- `logs/LEARNING.md` - תיעוד הלמידה מחלק 2.
+- `logs/COPILOT.md` - תיעוד תכנון וביקורת הבדיקות מחלק 3.
+- `chats/LEARNING.md` ו-`chats/COPILOT.md` - עותקי השיחות שנשמרו במאגר.
 
----
-
-> תוכן Drupal/Docker שלהלן וקובציו נשמרו מהיסטוריית המאגר ואינם חלק ממטלה 2.
-
-# פרויקט Drupal ב-Docker - רז מצליח ובן פישר
-
-## מי אנחנו
-
-- רז מצליח
-- בן פישר
-
-פרויקט מסכם בקורס DevTools, מכללת אפקה, הנדסת תוכנה, שנה א׳ סמסטר ב׳.
-
-## מה נדרשנו לעשות
-
-נדרשנו ליצור אתר Drupal בעזרת Docker, לחבר אותו למסד נתונים MySQL, ליצור אפשרויות גיבוי ושחזור, ליצור סקריפט ניקוי, ולתעד הכל בקובץ README.
-
-## מה עשינו
-
-יצרנו רשת Docker, קונטיינר MySQL, קונטיינר Drupal, Docker volumes, סקריפט הקמה, סקריפט גיבוי, סקריפט שחזור, סקריפט ניקוי ותיעוד לפרויקט.
-
-## טכנולוגיות
-
-- Docker
-- Drupal
-- MySQL
-- Bash
-- Git
-- GitHub
-
-## מבנה הקבצים בפרויקט
-
-```text
-.
-├── setup.sh
-├── backup.sh
-├── restore.sh
-├── cleanup.sh
-├── README.md
-└── backups/
-    ├── .gitkeep
-    └── my-drupal.backup.sql.gz
-```
-
-הקובץ `backups/my-drupal.backup.sql.gz` הוא קובץ הגיבוי האמיתי של בסיס הנתונים.
-הוא נוצר לאחר התקנת Drupal, הוספת תכנים והרצת `./backup.sh`.
-אין ליצור קובץ גיבוי מזויף ידנית.
-
-## הוראות הפעלה Step By Step
-
-```bash
-git clone https://github.com/Afeka-DevTools/26b-10142-unittesting-raz_ben.git
-cd 26b-10142-unittesting-raz_ben
-chmod +x setup.sh backup.sh restore.sh cleanup.sh
-./setup.sh
-```
-
-לאחר הרצת `setup.sh`, פותחים בדפדפן:
-
-```bash
-http://localhost:8080
-```
-
-## הגדרת Drupal בדפדפן
-
-במסך בחירת פרופיל ההתקנה יש לבחור:
-
-```text
-Standard
-```
-
-אין לבחור `Demo: Umami Food Magazine`, כי הפרופיל הזה לא נדרש לפרויקט ועלול להיכשל בתלויות בגרסאות Drupal חדשות.
-
-במסך הגדרת מסד הנתונים יש לבחור MySQL ולהשתמש בפרטים הבאים:
-
-```text
-Database type:
-MySQL
-
-Database host:
-afeka-mysql-db
-
-Database port:
-3306
-
-Database name:
-drupal_db
-
-Database user:
-drupal_user
-
-Database password:
-drupal_pass
-
-Site name:
-האתר של רז מצליח ובן פישר
-
-Admin username:
-demoadmin
-
-Admin password:
-secretpass
-```
-
-חשוב: חשבון המנהל `demoadmin` נוצר ידנית בזמן התקנת Drupal בדפדפן.
-
-משתמשים עבור רז מצליח ובן פישר צריכים להיווצר ידנית בתוך Drupal אחרי סיום ההתקנה.
-
-תוכן מילון המונחים של הקורס צריך להתווסף ידנית דרך ממשק הניהול של Drupal.
-
-## גיבוי
-
-לאחר שהאתר ומסד הנתונים קיימים, מריצים:
-
-```bash
-./backup.sh
-```
-
-הגיבוי נשמר בקובץ:
-
-```text
-backups/my-drupal.backup.sql.gz
-```
-
-## שחזור
-
-כדי לשחזר את מסד הנתונים מהגיבוי:
-
-```bash
-./restore.sh
-```
-
-הסקריפט משחזר את הקובץ `backups/my-drupal.backup.sql.gz` ומפעיל מחדש את קונטיינר Drupal.
-
-## ניקוי סביבת העבודה
-
-כדי למחוק את סביבת Docker של הפרויקט:
-
-```bash
-./cleanup.sh
-```
-
-הסקריפט מבקש אישור לפני המחיקה. כדי להמשיך צריך להקליד בדיוק:
-
-```text
-yes
-```
-
-חשוב: cleanup מוחק את הקונטיינרים של הפרויקט, Docker images, רשת Docker ו-Docker volumes. מחיקת ה-volumes מוחקת גם את נתוני Drupal ו-MySQL שנשמרו בהם.
-
-## הערות חשובות
-
-- כתובת האתר: `http://localhost:8080`
-- רשת Docker: `afeka-drupal-network`
-- קונטיינר Drupal: `afeka-drupal-site`
-- קונטיינר MySQL: `afeka-mysql-db`
-- Volume של MySQL: `afeka-mysql-data`
-- Volume של Drupal: `afeka-drupal-data`
-- שם מסד הנתונים: `drupal_db`
-- משתמש מסד הנתונים: `drupal_user`
-- סיסמת מסד הנתונים: `drupal_pass`
-- סיסמת root של MySQL: `my-secret-pw`
-- קובץ הגיבוי: `backups/my-drupal.backup.sql.gz`
-- הפרויקט משתמש בפקודות Docker רגילות ובסקריפטים פשוטים ב-Bash.
-- אין ליצור קובץ גיבוי מזויף. קובץ הגיבוי האמיתי נוצר רק אחרי התקנת Drupal והרצת `./backup.sh`.
+המלצות ה-LLM נבדקו מול הקוד ובאמצעות `./gradlew clean check`; הן לא הוגשו
+ללא אימות אוטומטי של הבדיקות וכיסוי הנתיבים.
