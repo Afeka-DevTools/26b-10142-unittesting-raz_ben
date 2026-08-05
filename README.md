@@ -21,7 +21,7 @@
 ```bash
 git clone https://github.com/Afeka-DevTools/26b-10142-unittesting-raz_ben.git
 cd 26b-10142-unittesting-raz_ben
-bash ./gradlew clean check
+./gradlew clean check
 ```
 
 ב-Windows יש להריץ:
@@ -35,7 +35,7 @@ gradlew.bat clean check
 להרצת הבדיקות בלבד:
 
 ```bash
-bash ./gradlew test
+./gradlew test
 ```
 
 ## מה נבדק
@@ -58,7 +58,7 @@ bash ./gradlew test
 
 ## בדיקת מסלולי הקוד
 
-המשימה דורשת לבדוק שכל הנתיבים ומקרי הקצה מכוסים. לכן הוגדרו כללי JaCoCo ב-`app/build.gradle.kts` שמכשילים את `bash ./gradlew check` אם כיסוי השורות או הענפים נמוך מ-100%. ההגדרה מספקת אימות אוטומטי בנוסף לבדיקת מקרי הקצה הידנית.
+המשימה דורשת לבדוק שכל הנתיבים ומקרי הקצה מכוסים. לכן הוגדרו כללי JaCoCo ב-`app/build.gradle.kts` שמכשילים את `./gradlew check` אם כיסוי השורות או הענפים נמוך מ-100%. ההגדרה מספקת אימות אוטומטי בנוסף לבדיקת מקרי הקצה הידנית.
 
 ## תיעוד שימוש ב-LLM
 
